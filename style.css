@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 30px;
+  font-size: 1.5rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.dayview .appointment {
+  border: 2px solid grey;
+  width: 60%;
+  margin-bottom: 20px;
+}
+
+.dayview .time,
+.dayview .patient {
+  height: 30px;
+  padding: 10px;
+}
+
+.dayview .time {
+  float: right;
+  background-color: aquamarine;
+}
+
+.dayview .patient {
+  font-weight: bold;
+  background-color: deepskyblue;
+}
+
+.dayview .dentist,
+.dayview .assistant {
+  padding: 10px;
+}
+
+/* Calendar view */
+
+.calendarview .header,
+.calendarview .table {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.calendarview .header {
+  background-color: aquamarine;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.calendarview {
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.calendarview .day {
+  margin-bottom: 5px;
+  border: 1px solid grey;
+  padding: 3px;
+}

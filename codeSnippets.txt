@@ -1,0 +1,125 @@
+
+/* const state = {
+    dentists: [
+      {
+        id: 0,
+        name: "Dirk"
+      },
+      {
+        id: 1,
+        name: "Dora"
+      },
+      {
+        id: 55,
+        name: "Daffy"
+      }
+    ],
+    patients: [],
+    appointments: []
+  };
+  ​
+  // console.log(state);
+  ​
+  const getDentistName = (state, id) => {
+    const dentists = state["dentists"].filter(dentist => dentist["id"] === id);
+    const dentist = dentists[0];
+    return dentist["name"];
+  };
+  ​
+  const updateDentistName = (state, id, newName) => {
+    // copy the old state
+    const newState = { ...state };
+    newState["dentists"] = [...state["dentists"]];
+    const index = state["dentists"].findIndex(dentist => dentist["id"] === id);
+    const newDentist = { ...state["dentists"][index] };
+  ​
+    // update the new state
+    newDentist["name"] = newName;
+    newState["dentists"][index] = newDentist;
+  ​
+    // return the new state
+    return newState;
+  };
+  ​
+  // console.log(getDentistName(state, 1));
+  const newState = updateDentistName(state, 55, "Dafstra");
+  ​
+  console.log("old state:");
+  console.log(state);
+  ​
+  console.log("new state:");
+  console.log(newState); */
+-----------------------------------------------------------------------
+
+//tot hier...
+const createDayView = () => {
+	const appointments = [];
+	// hier komen de verwijzingen naar de juiste functie.
+	for (i = 0; i < 30; i++) {
+		appointments.push(`<li class="appointment">
+      <div class="time">${getRandomTime()}</div>
+      <div class="patient">Patiënt: ${getRandomName()}</div>
+      <div class="dentist">Tandarts: ${getRandomName()}</div>
+      <div class="assistant">Assistent: ${getRandomName()}</div>
+      </li>`);
+	}
+	document.querySelector('.dayview').innerHTML = appointments.join('');
+};
+//hier worden de afspraken geladen.
+const createDayOnCalendar = numAppointments => {
+	const appointments = [];
+	for (let i = 0; i < numAppointments; i++) {
+		appointments.push(`
+      <div class="appointment">
+        <span class="time">${getRandomTime()}</span>
+        <span class="patient">${getRandomName()}</span>
+      </div>`);
+	}
+	return `<div class="day">${appointments.join('')}</div>`;
+};
+
+const createCalendarView = () => {
+	const days = [];
+
+	for (let i = 1; i < 28; i++) {
+		if ([6, 7, 13, 14, 20, 21, 27, 28].includes(i)) {
+			continue;
+		}
+		days.push(createDayOnCalendar(5));
+	}
+	document.querySelector('.calendarview .table').innerHTML = days.join('');
+};
+
+const start = () => {
+	try {
+		createDayView();
+	} catch {}
+
+	try {
+		createCalendarView();
+	} catch {}
+};
+
+document.addEventListener('DOMContentLoaded', start);
+ */
+
+
+
+const addDentist = (data, newName, newSurname, newTel, newMail) => {
+  // copy the old state
+  const newId = data["dentists"].length + 1;
+  const newData = { ...data };
+  console.log(newData);
+  newData["dentists"] = [...data["dentists"]];
+  const newDentist = {
+    id: newId,
+    name: newName,
+    surname: newSurname,
+    tel: newTel,
+    mail: newMail
+  };
+  // update the new state
+  newData["dentists"].push(newDentist);
+  // return the new state
+  return newData;
+};
