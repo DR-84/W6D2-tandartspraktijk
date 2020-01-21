@@ -19,8 +19,8 @@ const state = {
 			telNum: '0687654321',
 			email: 'aartappel@tandartspraktijkbvt.nl',
 			sick: false,
-			assistent: false,
-			dentist: true
+			assistent: true,
+			dentist: false
 		},
 		{
 			id: 1579618630755,
@@ -49,7 +49,7 @@ const state = {
 			id: 1579607081789,
 			patientName: 'Pat Zero',
 			dentistName: 'Chies Peyn',
-			assistent: 'firstName()+lastName()',
+			assistentName: 'firstName()+lastName()',
 			dayNumber: 5,
 			timeHour: 1400
 			//assistentPresent: false
@@ -97,7 +97,6 @@ const makeDentistSick = (state, dentId) => {
 		dentist => dentist.id === dentId
 	);
 	const sickDentist = { ...state['dentistData'][index] };
-	console.log(sickDentist['sick']);
 	sickDentist['sick'] = true;
 	newState['dentistData'][index] = sickDentist;
 	return newState;
@@ -108,10 +107,10 @@ const addAppointment = (
 	id,
 	patId,
 	dentId,
-	assis,
+	assisId,
 	day,
 	time,
-	assisPresent
+	assistentPresent
 ) => {
 	const newState = { ...state };
 	newState['appointmentsData'] = [...state['appointmentsData']];
@@ -121,31 +120,59 @@ const addAppointment = (
 		dentist => dentist.id === dentId
 	);
 	const dentistNames = dentistObj['firstName'] + ' ' + dentistObj['lastName'];
-	const newAppointment = {
-		id: id,
-		patientName: patientNames,
-		dentistName: dentistNames,
-		assistent: assis,
-		dayNumber: day,
-		timeHour: time,
-		assistentPresent: assisPresent
-	};
-
-	newState['appointmentsData'].push(newAppointment);
-	return newState;
+	if (assistentPresent === true) {
+		const assistentObj = state['dentistData'].find(
+			assistent => assistent.id === assisId
+		);
+		const assitentNames =
+			assistentObj['firstName'] + ' ' + assistentObj['lastName'];
+		const newAppointment = {
+			id: id,
+			patientName: patientNames,
+			dentistName: dentistNames,
+			assistentName: assitentNames,
+			dayNumber: day,
+			timeHour: time,
+			assistentPresent: assistentPresent
+		};
+		newState['appointmentsData'].push(newAppointment);
+		return newState;
+	} else {
+		const newAppointment = {
+			id: id,
+			patientName: patientNames,
+			dentistName: dentistNames,
+			assistentName: assisId,
+			dayNumber: day,
+			timeHour: time,
+			assistentPresent: assistentPresent
+		};
+		newState['appointmentsData'].push(newAppointment);
+		return newState;
+	}
 };
 
-newState4 = addAppointment(
+newState = addAppointment(
+	state,
+	uniqid,
+	1579607071887,
+	1579618630755,
+	1579618623665,
+	3,
+	1500,
+	true
+);
+/* newState = addAppointment(
 	state,
 	uniqid,
 	1579607071887,
 	1579618630755,
 	false,
-	3,
-	1500,
+	2,
+	1600,
 	false
-);
-newState3 = makeDentistSick(state, 1579607037003);
+); */
+/*newState = makeDentistSick(state, 1579607037003);
 newState2 = addPatient(
 	state,
 	uniqid,
@@ -165,24 +192,17 @@ newState = addDentist(
 	false,
 	false,
 	true
-);
+); */
 
 console.log('old state:');
 console.log(state);
-console.log('new dentist state:');
+console.log('new state:');
 console.log(newState);
-console.log('new  patient state 2:');
-console.log(newState2);
-console.log('dentist is sick:');
-console.log(newState3);
-console.log('appointment added:');
-console.log(newState4);
 
-const createDayView = () => {
-	const appointments = [];
-
-	for (i = 0; i < 30; i++) {
-		appointments.push(`<li class="appointment">
+const createDayView = state => {
+	console.log('start runs');
+	{
+		state.appointmentsData.push(`<li class="appointment">
       <div class="time">1400</div>
       <div class="patient">Patiënt: ${appointmentPatient}</div>
       <div class="dentist">Tandarts:${appointmentDentist}</div>
