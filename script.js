@@ -115,21 +115,22 @@ const addAppointment = (
 ) => {
 	const newState = { ...state };
 	newState['appointmentsData'] = [...state['appointmentsData']];
-	const indexPatient = state['patientData'].findIndex(
-		patient => patient.id === patId
-	);
-	const indexDentist = state['dentistData'].findIndex(
+	const patientObj = state['patientData'].find(patient => patient.id === patId);
+	const patientNames = patientObj['firstName'] + ' ' + patientObj['lastName'];
+	const dentistObj = state['dentistData'].find(
 		dentist => dentist.id === dentId
 	);
+	const dentistNames = dentistObj['firstName'] + ' ' + dentistObj['lastName'];
 	const newAppointment = {
-		id: args[0],
-		patientName: args[1],
-		dentistName: args[2],
-		assistent: args[3],
-		dayNumber: args[4],
-		timeHour: args[5],
-		assistentPresent: args[6]
+		id: id,
+		patientName: patientNames,
+		dentistName: dentistNames,
+		assistent: assis,
+		dayNumber: day,
+		timeHour: time,
+		assistentPresent: assisPresent
 	};
+
 	newState['appointmentsData'].push(newAppointment);
 	return newState;
 };

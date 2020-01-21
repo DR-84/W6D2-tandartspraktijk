@@ -123,3 +123,8 @@ const addDentist = (data, newName, newSurname, newTel, newMail) => {
   // return the new state
   return newData;
 };
+
+
+const patientFirstLast = {
+		...state['patientData'][namePatientIndex]['firstName']
+	};
