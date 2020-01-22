@@ -128,3 +128,16 @@ const addDentist = (data, newName, newSurname, newTel, newMail) => {
 const patientFirstLast = {
 		...state['patientData'][namePatientIndex]['firstName']
 	};
+
+
+  
+  const createDayView = state.appointmentsData.map(appo => {
+	const listItem = document.createElement('li');
+	const appointmentElement = document.getElementById('dayview');
+	state.appointmentsData.forEach(item => {
+		appointmentElement.appendChild(item);
+		appointmentElement.appendChild(listItem);
+		//console.log(item);
+		return listItem;
+	});
+});
