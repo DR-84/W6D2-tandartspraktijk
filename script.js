@@ -166,10 +166,10 @@ const state = {
 		{
 			id: 1579688862405,
 			patientName: 'Pat Zero',
-			dentistName: 'Darth Vader',
-			assistentName: 'Aart Appel',
+			dentistName: 'Aart Appel',
+			assistentName: 'Darth Vader',
 			dayNumber: 3,
-			timeHour: 1500,
+			timeHour: 1100,
 			assistentPresent: true,
 			cancelled: false
 		}
@@ -319,41 +319,55 @@ const removeAppointment = (state, appointmentId) => {
 const moveAppointment = (state, appointmentId, newDayNumber, newTime) => {
 	const newState = { ...state };
 	newState['appointmentsData'] = [...state['appointmentsData']];
-	//find appointment
-	const getAppointment = state['appointmentsData'].find(
+	// get appointment to move
+	let getOldAppointment = state['appointmentsData'].find(
 		appoint => appoint.id === appointmentId
 	);
-	const isSameDay = state['appointmentsData'].find(
-		dayNum => dayNum.dayNumber === newDayNumber
+	console.log(getOldAppointment);
+	//find names in object old appointment
+	const oldAppDentist = getOldAppointment.dentistName;
+	const oldAppAssist = getOldAppointment.assistentName;
+	// find appointmetns with same day
+	const filterDay = state['appointmentsData'].filter(
+		appoint => appoint.dayNumber === newDayNumber
 	);
-	const isSameTime = state['appointmentsData'].find(
-		timeNum => timeNum.timeHour === newTime
+	// filter same hours out of same day array
+	const filteredDaysByTime = filterDay.filter(
+		appoint => appoint.timeHour === newTime
 	);
-	console.log(isSameDay && isSameTime);
-	if (isSameDay && isSameTime) {
-		const isSameDentist = state['appointmentsData'].find(
-			dentist => dentist.dentistName === ''
+	//check if same time appointment has same dentist
+	const checkDentistName = filteredDaysByTime.find(
+		appoint => appoint.dentistName === oldAppDentist
+	);
+	const checkAssistantName = filteredDaysByTime.find(
+		appoint => appoint.assistentName === oldAppAssist
+	);
+
+	//if get day and get time zijn ja >> check of dentist and assist ook is ja
+	if (filteredDaysByTime && checkDentistName && checkAssistantName) {
+		console.log(
+			'doesnt go through here!',
+			filteredDaysByTime && checkDentistName && checkAssistantName
 		);
-		const isSameAssistent = state['appointmentsData'].find(
-			assistent => assistent.assistentName === ''
-		);
-		console.log(isSameDentist && isSameAssistent);
+		return newState;
+	} else {
+		const newAppointment = {
+			id: uniqid,
+			patientName: getOldAppointment['patientName'],
+			dentistName: getOldAppointment['dentistName'],
+			assistentName: getOldAppointment['assistentName'],
+			dayNumber: newDayNumber,
+			timeHour: newTime,
+			assistentPresent: getOldAppointment['assistentPresent'],
+			cancelled: getOldAppointment['cancelled']
+		};
+
+		newState['appointmentsData'].push(newAppointment);
+		return newState;
 	}
-
-	/* console.log(getAppointment);
-	console.log(isSameDay && isSameTime);
-	//console.log(isSameTime);
-	console.log('cehck'); */
-	//change day
-	/* const changeDay = (getAppointment['dayNumber'] = newDayNumber); */
-	//change time
-	/* const changeTime = (getAppointment['timeHour'] = newTime); */
-
-	//check tendist
-	//check assistent
 };
 
-/* newState = moveAppointment(state, 1579688862405, 5, 2000); */
+newState = moveAppointment(state, 1579688862405, 3, 1100);
 /* newState = makePatientSick(state, 1579607071887); */
 /* newState = removeAppointment(state, 1579688862405); */
 /* newState = addAppointment(
@@ -376,16 +390,16 @@ const moveAppointment = (state, appointmentId, newDayNumber, newTime) => {
 	1500,
 	true
 ); */
-newState = addAppointment(
+/* newState = addAppointment(
 	state,
 	uniqid,
 	1579607071887,
 	1579618630755,
 	1579618623665,
 	3,
-	1500,
+	2100,
 	true
-);
+); */
 /* newState = addAppointment(
 	state,
 	uniqid,
